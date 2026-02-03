@@ -1,25 +1,23 @@
 import { test, expect } from '@playwright/test'
 
+/// AAA - Arrange, Act, Assert 
+
 test('it should validate that the order is approved ', async ({ page }) => {
-  await page.goto('http://localhost:5173/')
 
-  //Checkpoint
-  await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint')
+    // Arrange
+    await page.goto('http://localhost:5173/')
+    await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint')
+    await page.getByRole('link', { name: 'Consultar Pedido' }).click()
+    await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
 
-  await page.getByRole('link', { name: 'Consultar Pedido' }).click()
+    // Act
+    await page.getByTestId('search-order-id').fill('VLO-E0MM0U')
+    await page.getByTestId('search-order-button').click()
 
-  //Checkpoint
-  await expect(page.getByRole('heading')).toContainText('Consultar Pedido')
-
-  await page.getByTestId('search-order-id').click()
-  await page.getByTestId('search-order-id').fill('VLO-E0MM0U')
-
-  await page.getByTestId('search-order-button').click()
-
-  await expect(page.getByTestId('order-result-id')).toBeVisible()
-  await expect(page.getByTestId('order-result-id')).toContainText('VLO-E0MM0U')
-
-  await expect(page.getByTestId('order-result-status')).toBeVisible()
-  await expect(page.getByTestId('order-result-status')).toContainText('APROVADO')
+    // Assert
+    await expect(page.getByTestId('order-result-id')).toBeVisible()
+    await expect(page.getByTestId('order-result-id')).toContainText('VLO-E0MM0U')
+    await expect(page.getByTestId('order-result-status')).toBeVisible()
+    await expect(page.getByTestId('order-result-status')).toContainText('APROVADO')
 
 })
